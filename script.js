@@ -71,3 +71,44 @@ function resetTimer() {
     currentStage = 0;
     isPaused = true;
 }
+
+// Previous JavaScript code...
+
+document.getElementById("start-timer").addEventListener("click", function() {
+    const coffeeGrams = document.getElementById("coffee-grams").value;
+    const brewingMethod = document.getElementById("brewing-method").value;
+    const stages = brewingMethods[brewingMethod].沖泡階段;
+    const totalWater = coffeeGrams * (brewingMethod === "一刀流" ? 16 : 15); // 16:1 or 15:1 ratio
+    startBrewingTimer(stages, totalWater);
+});
+
+function startBrewingTimer(stages, totalWater) {
+    // ...rest of the function...
+    function nextStage() {
+        if (currentStage < stages.length) {
+            const stageWater = totalWater * (stages[currentStage].水量 / stages.reduce((acc, stage) => acc + stage.水量, 0));
+            setTimer(stages[currentStage].時間, stageWater, nextStage);
+            currentStage++;
+        } else {
+            document.getElementById("timer-display").innerHTML = "沖泡完成！";
+            resetTimer();
+        }
+    }
+    nextStage();
+}
+
+function setTimer(duration, water, callback) {
+    let time = 0;
+    timerInterval = setInterval(function() {
+        document.getElementById("timer-display").innerHTML = `計時：${time} / ${duration} 秒`;
+        document.getElementById("water-display").innerHTML = `注水量：${((time / duration) * water).toFixed(2)} ml`;
+        if (time >= duration) {
+            clearInterval(timerInterval);
+            document.getElementById("ding-sound").play();
+            callback();
+        }
+        time++;
+    }, 1000);
+}
+
+
