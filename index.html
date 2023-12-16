@@ -8,14 +8,17 @@
 </head>
 <body>
     <h1>Coffee Brewing Timer</h1>
+    <input type="number" id="coffee-grams" placeholder="咖啡粉總克數">
     <select id="brewing-method">
         <option value="一刀流">一刀流</option>
         <option value="4:6法">4:6 法</option>
     </select>
+
     <div id="timer-display"></div>
+    <div id="water-display"></div>
 
     <div class="floating-buttons">
-        <button id="start-pause-timer">開始</button>
+        <button id="start-timer">開始</button>
         <button id="reset-timer">重置</button>
     </div>
 
