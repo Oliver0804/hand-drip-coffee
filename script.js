@@ -105,3 +105,15 @@ function resetTimer() {
 document.getElementById("test-sound").addEventListener("click", function() {
     document.getElementById("ding-sound").play();
 });
+
+
+document.getElementById("calculate-ratio").addEventListener("click", function() {
+    const coffeeGrams = document.getElementById("coffee-grams").value;
+    const waterVolume = document.getElementById("water-volume").value;
+    if (coffeeGrams > 0) {
+        const ratio = waterVolume / coffeeGrams;
+        document.getElementById("ratio-display").textContent = `粉水比: 1:${ratio.toFixed(2)}`;
+    } else {
+        document.getElementById("ratio-display").textContent = "請輸入有效的咖啡粉重量";
+    }
+});
