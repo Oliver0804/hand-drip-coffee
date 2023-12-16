@@ -43,16 +43,26 @@ function startBrewingTimer() {
             document.getElementById("timer-display").textContent = `計時：${timeElapsed} / ${stageTime} 秒`;
             timeElapsed++;
         } else {
+            // 每個階段結束時播放聲音
+            document.getElementById("ding-sound").play();
+
             clearInterval(timerInterval);
             if (currentStage < stages.length - 1) {
                 currentStage++;
-                startBrewingTimer();
+                updateStageDisplay(currentStage, stages.length); // 更新階段顯示
+                startBrewingTimer(); // 開始下一階段
             } else {
                 document.getElementById("timer-display").textContent = "沖泡完成！";
                 resetTimer();
             }
         }
     }, 1000);
+}
+
+
+function updateStageDisplay(currentStage, totalStages) {
+    const stageNumber = currentStage + 1; // 人類可讀的階段數（從1開始）
+    document.getElementById("stage-display").textContent = `第${stageNumber}階段 [${stageNumber}/${totalStages}]`;
 }
 
 function pauseTimer() {
@@ -66,3 +76,8 @@ function resetTimer() {
     currentStage = 0;
     isTimerRunning = false;
 }
+
+
+document.getElementById("test-sound").addEventListener("click", function() {
+    document.getElementById("ding-sound").play();
+});

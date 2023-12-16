@@ -59,3 +59,10 @@ button:hover {
 .floating-buttons button:hover {
     background-color: #007B9A;
 }
+
+
+#stage-display {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+}
