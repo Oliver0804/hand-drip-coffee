@@ -21,7 +21,8 @@ fetch('https://raw.githubusercontent.com/Oliver0804/hand-drip-coffee/main/Coffee
     .then(response => response.json())
     .then(data => {
         brewingMethods = data;
-        displayBrewingTime();
+        displayBrewingTime(); // 初始時顯示第一個沖泡法的時間
+        initializeBrewingMethodSelector();
     })
     .catch(error => console.error('Error loading brewing methods:', error));
 
@@ -31,6 +32,33 @@ function displayBrewingTime() {
     const totalTime = stages.reduce((sum, stage) => sum + stage.時間, 0);
     document.getElementById("brewing-time-display").textContent = `總沖泡時間：${totalTime} 秒`;
 }
+// 初始化沖泡方法選擇器
+function initializeBrewingMethodSelector() {
+    const selector = document.getElementById("brewing-method");
+    selector.innerHTML = ''; // 清空現有的選項
+
+    for (const method in brewingMethods) {
+        const option = document.createElement("option");
+        option.value = method;
+        option.textContent = brewingMethods[method].沖泡法;
+        selector.appendChild(option);
+    }
+
+    // 綁定 onChange 事件以更新沖泡時間
+    selector.onchange = displayBrewingTime;
+}
+
+function displayBrewingTime() {
+    const method = document.getElementById("brewing-method").value;
+    const stages = brewingMethods[method].沖泡階段;
+    const totalTime = stages.reduce((sum, stage) => sum + stage.時間, 0);
+    document.getElementById("brewing-time-display").textContent = `總沖泡時間：${totalTime} 秒`;
+}
+
+
+
+
+
 function startBrewingTimer() {
     const method = document.getElementById("brewing-method").value;
     const stages = brewingMethods[method].沖泡階段;
