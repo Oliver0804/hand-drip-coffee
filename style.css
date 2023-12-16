@@ -1,0 +1,10 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+#timer-display {
+    font-size: 24px;
+    margin-top: 20px;
+}
