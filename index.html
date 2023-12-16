@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>Coffee Brewing Timer</h1>
+    <hr> 
     <div class="input-group">
         咖啡粉重量 <input type="number" id="coffee-grams" placeholder="咖啡粉總克數 (g)" value="20"> g 
     </div>
@@ -22,13 +23,15 @@
 
     <div id="ratio-display"></div>
     <p>
+    <hr> 
     <select id="brewing-method" onchange="displayBrewingTime()">
         <option value="一刀流">一刀流</option>
         <option value="4:6法">4:6 法</option>
     </select>
     <div id="brewing-time-display"></div>
-
+   
     <div id="stage-display"></div> <!-- 新增顯示階段和進度的元素 -->
+  
     <div id="stage-info">
         <div id="stage-name"></div> <!-- 顯示階段名稱 -->
         <div id="water-amount"></div> <!-- 顯示水量 -->

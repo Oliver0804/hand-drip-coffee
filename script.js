@@ -57,7 +57,10 @@ function displayBrewingTime() {
 
 
 
-
+// 這個函數計算在當前階段之前的所有階段中已經經過的總時間
+function getTotalElapsed(stages, currentStage) {
+    return stages.slice(0, currentStage).reduce((sum, stage) => sum + stage.時間, 0);
+}
 
 function startBrewingTimer() {
     const method = document.getElementById("brewing-method").value;
@@ -72,16 +75,23 @@ function startBrewingTimer() {
 
     updateStageInfo(stageDetails, currentStage, stages.length);
 
-    timeElapsed = 0;
+    timeElapsed = 1; // 從 1 秒開始計時
+    const totalTime = stages.reduce((sum, stage) => sum + stage.時間, 0); // 計算總時間
+
     timerInterval = setInterval(() => {
-        if (timeElapsed < stageTime) {
+        if (timeElapsed <= stageTime) {
             document.getElementById("timer-display").textContent = `計時：${timeElapsed} / ${stageTime} 秒`;
+            updateProgressBar(timeElapsed + getTotalElapsed(stages, currentStage) - 1, totalTime);
             timeElapsed++;
         } else {
+            // 階段結束時更新進度條到當前階段的終點
+            updateProgressBar(getTotalElapsed(stages, currentStage + 1), totalTime);
+
             clearInterval(timerInterval);
             if (currentStage === stages.length - 1) {
                 playDingSound(true); // 最後一階段結束，播放三次聲音
                 document.getElementById("timer-display").textContent = "沖泡完成！";
+                updateProgressBar(totalTime, totalTime); // 確保進度條達到 100%
                 isTimerRunning = false;
                 document.getElementById("start-timer").textContent = "開始";
                 currentStage = 0; // 重置為第一階段
@@ -92,6 +102,15 @@ function startBrewingTimer() {
             }
         }
     }, 1000);
+}
+
+function updateProgressBar(elapsed, total) {
+    const progressPercentage = (elapsed / total) * 100;
+    document.getElementById("progress-bar").style.width = `${progressPercentage}%`;
+}
+
+function getTotalElapsed(stages, currentStage) {
+    return stages.slice(0, currentStage).reduce((sum, stage) => sum + stage.時間, 0);
 }
 
 function playDingSound(isFinalStage) {
@@ -116,6 +135,12 @@ function updateStageInfo(stageDetails, currentStage, totalStages) {
     document.getElementById("water-amount").textContent = `水量: ${stageDetails.水量}`;
     document.getElementById("flow-rate").textContent = `流速大小: ${stageDetails.流速大小}`;
 }
+
+// 更新計時顯示的函數
+function updateTimerDisplay(elapsed, total) {
+    document.getElementById("timer-display").textContent = `計時：${elapsed} / ${total} 秒`;
+}
+
 
 function pauseTimer() {
     clearInterval(timerInterval);
