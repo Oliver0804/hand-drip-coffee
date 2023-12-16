@@ -8,14 +8,33 @@
 </head>
 <body>
     <h1>Coffee Brewing Timer</h1>
-    <input type="number" id="coffee-grams" placeholder="咖啡粉總克數">
-    <select id="brewing-method">
+    <div class="input-group">
+        咖啡粉重量 <input type="number" id="coffee-grams" placeholder="咖啡粉總克數 (g)" value="20"> g 
+    </div>
+    <p>
+    <div class="input-group">
+        預期水量 <input type="number" id="water-volume" placeholder="預期水量 (ml)" value="300"> ml
+    </div>
+    <p>
+
+    <button id="calculate-ratio">計算粉水比</button>
+    <p>
+
+    <div id="ratio-display"></div>
+    
+    <select id="brewing-method" onchange="displayBrewingTime()">
         <option value="一刀流">一刀流</option>
         <option value="4:6法">4:6 法</option>
     </select>
+    <div id="brewing-time-display"></div>
+
 
     <div id="timer-display"></div>
     <div id="water-display"></div>
+
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
 
     <div class="floating-buttons">
         <button id="start-timer">開始</button>

@@ -1,57 +1,57 @@
 let brewingMethods;
-fetch('brewing-methods.json')
-    .then(response => response.json())
-    .then(data => brewingMethods = data);
-
 let timerInterval;
-let timeRemaining;
+let timeElapsed;
 let currentStage = 0;
-let isPaused = true;
+let isTimerRunning = false;
 
-document.getElementById("start-pause-timer").addEventListener("click", function() {
-    if (isPaused) {
+document.getElementById("start-timer").addEventListener("click", function() {
+    if (!isTimerRunning) {
         this.textContent = "暫停";
-        if (!timerInterval) {
-            startBrewingTimer(brewingMethods[document.getElementById("brewing-method").value].沖泡階段);
-        } else {
-            resumeTimer();
-        }
+        startBrewingTimer();
     } else {
         this.textContent = "開始";
         pauseTimer();
     }
-    isPaused = !isPaused;
+    isTimerRunning = !isTimerRunning;
 });
 
-document.getElementById("reset-timer").addEventListener("click", function() {
-    resetTimer();
-});
+document.getElementById("reset-timer").addEventListener("click", resetTimer);
 
-function startBrewingTimer(stages) {
-    currentStage = 0;
-    nextStage(stages);
+fetch('https://raw.githubusercontent.com/Oliver0804/hand-drip-coffee/main/Coffee_Brewing_Methods.json')
+    .then(response => response.json())
+    .then(data => {
+        brewingMethods = data;
+        displayBrewingTime();
+    })
+    .catch(error => console.error('Error loading brewing methods:', error));
+
+function displayBrewingTime() {
+    const method = document.getElementById("brewing-method").value;
+    const stages = brewingMethods[method].沖泡階段;
+    const totalTime = stages.reduce((sum, stage) => sum + stage.時間, 0);
+    document.getElementById("brewing-time-display").textContent = `總沖泡時間：${totalTime} 秒`;
 }
 
-function nextStage(stages) {
-    if (currentStage < stages.length) {
-        setTimer(stages[currentStage].時間, () => nextStage(stages));
-        currentStage++;
-    } else {
-        document.getElementById("timer-display").innerHTML = "沖泡完成！";
-        resetTimer();
-    }
-}
+function startBrewingTimer() {
+    const method = document.getElementById("brewing-method").value;
+    const stages = brewingMethods[method].沖泡階段;
+    const stageTime = stages[currentStage].時間;
 
-function setTimer(duration, callback) {
-    timeRemaining = duration;
-    timerInterval = setInterval(function() {
-        document.getElementById("timer-display").innerHTML = `剩餘時間：${timeRemaining} 秒`;
-        if (timeRemaining <= 0) {
+    timeElapsed = 0;
+    timerInterval = setInterval(() => {
+        if (timeElapsed < stageTime) {
+            document.getElementById("timer-display").textContent = `計時：${timeElapsed} / ${stageTime} 秒`;
+            timeElapsed++;
+        } else {
             clearInterval(timerInterval);
-            document.getElementById("ding-sound").play();
-            callback();
+            if (currentStage < stages.length - 1) {
+                currentStage++;
+                startBrewingTimer();
+            } else {
+                document.getElementById("timer-display").textContent = "沖泡完成！";
+                resetTimer();
+            }
         }
-        timeRemaining--;
     }, 1000);
 }
 
@@ -59,56 +59,10 @@ function pauseTimer() {
     clearInterval(timerInterval);
 }
 
-function resumeTimer() {
-    setTimer(timeRemaining, () => nextStage(brewingMethods[document.getElementById("brewing-method").value].沖泡階段));
-}
-
 function resetTimer() {
     clearInterval(timerInterval);
-    document.getElementById("timer-display").innerHTML = "";
-    document.getElementById("start-pause-timer").textContent = "開始";
-    timerInterval = null;
+    document.getElementById("timer-display").textContent = "";
+    document.getElementById("start-timer").textContent = "開始";
     currentStage = 0;
-    isPaused = true;
+    isTimerRunning = false;
 }
-
-// Previous JavaScript code...
-
-document.getElementById("start-timer").addEventListener("click", function() {
-    const coffeeGrams = document.getElementById("coffee-grams").value;
-    const brewingMethod = document.getElementById("brewing-method").value;
-    const stages = brewingMethods[brewingMethod].沖泡階段;
-    const totalWater = coffeeGrams * (brewingMethod === "一刀流" ? 16 : 15); // 16:1 or 15:1 ratio
-    startBrewingTimer(stages, totalWater);
-});
-
-function startBrewingTimer(stages, totalWater) {
-    // ...rest of the function...
-    function nextStage() {
-        if (currentStage < stages.length) {
-            const stageWater = totalWater * (stages[currentStage].水量 / stages.reduce((acc, stage) => acc + stage.水量, 0));
-            setTimer(stages[currentStage].時間, stageWater, nextStage);
-            currentStage++;
-        } else {
-            document.getElementById("timer-display").innerHTML = "沖泡完成！";
-            resetTimer();
-        }
-    }
-    nextStage();
-}
-
-function setTimer(duration, water, callback) {
-    let time = 0;
-    timerInterval = setInterval(function() {
-        document.getElementById("timer-display").innerHTML = `計時：${time} / ${duration} 秒`;
-        document.getElementById("water-display").innerHTML = `注水量：${((time / duration) * water).toFixed(2)} ml`;
-        if (time >= duration) {
-            clearInterval(timerInterval);
-            document.getElementById("ding-sound").play();
-            callback();
-        }
-        time++;
-    }, 1000);
-}
-
-
