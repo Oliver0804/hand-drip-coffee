@@ -31,11 +31,18 @@ function displayBrewingTime() {
     const totalTime = stages.reduce((sum, stage) => sum + stage.時間, 0);
     document.getElementById("brewing-time-display").textContent = `總沖泡時間：${totalTime} 秒`;
 }
-
 function startBrewingTimer() {
     const method = document.getElementById("brewing-method").value;
     const stages = brewingMethods[method].沖泡階段;
-    const stageTime = stages[currentStage].時間;
+
+    if (currentStage >= stages.length) {
+        currentStage = 0; // 重置為第一階段
+    }
+
+    const stageDetails = stages[currentStage];
+    const stageTime = stageDetails.時間;
+
+    updateStageInfo(stageDetails, currentStage, stages.length);
 
     timeElapsed = 0;
     timerInterval = setInterval(() => {
@@ -43,26 +50,43 @@ function startBrewingTimer() {
             document.getElementById("timer-display").textContent = `計時：${timeElapsed} / ${stageTime} 秒`;
             timeElapsed++;
         } else {
-            // 每個階段結束時播放聲音
-            document.getElementById("ding-sound").play();
-
             clearInterval(timerInterval);
-            if (currentStage < stages.length - 1) {
-                currentStage++;
-                updateStageDisplay(currentStage, stages.length); // 更新階段顯示
-                startBrewingTimer(); // 開始下一階段
-            } else {
+            if (currentStage === stages.length - 1) {
+                playDingSound(true); // 最後一階段結束，播放三次聲音
                 document.getElementById("timer-display").textContent = "沖泡完成！";
-                resetTimer();
+                isTimerRunning = false;
+                document.getElementById("start-timer").textContent = "開始";
+                currentStage = 0; // 重置為第一階段
+            } else {
+                playDingSound(false); // 非最後一階段結束，播放一次聲音
+                currentStage++;
+                startBrewingTimer(); // 開始下一階段
             }
         }
     }, 1000);
+}
+
+function playDingSound(isFinalStage) {
+    const dingSound = document.getElementById("ding-sound");
+    dingSound.play();
+    if (isFinalStage) {
+        setTimeout(() => { dingSound.play(); }, 500);
+        setTimeout(() => { dingSound.play(); }, 1000);
+    }
 }
 
 
 function updateStageDisplay(currentStage, totalStages) {
     const stageNumber = currentStage + 1; // 人類可讀的階段數（從1開始）
     document.getElementById("stage-display").textContent = `第${stageNumber}階段 [${stageNumber}/${totalStages}]`;
+}
+
+function updateStageInfo(stageDetails, currentStage, totalStages) {
+    const stageNumber = currentStage + 1; // 人類可讀的階段數（從1開始）
+    document.getElementById("stage-display").textContent = `第${stageNumber}階段 [${stageNumber}/${totalStages}]`;
+    document.getElementById("stage-name").textContent = stageDetails.階段;
+    document.getElementById("water-amount").textContent = `水量: ${stageDetails.水量}`;
+    document.getElementById("flow-rate").textContent = `流速大小: ${stageDetails.流速大小}`;
 }
 
 function pauseTimer() {

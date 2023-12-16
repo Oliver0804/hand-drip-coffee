@@ -66,3 +66,22 @@ button:hover {
     color: #333;
     margin: 10px 0;
 }
+
+/* ...之前的 CSS 樣式... */
+
+#stage-info div {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+#stage-name {
+    color: #4CAF50; /* 綠色 */
+}
+
+#water-amount {
+    color: #2196F3; /* 藍色 */
+}
+
+#flow-rate {
+    color: #FF9800; /* 橙色 */
+}
