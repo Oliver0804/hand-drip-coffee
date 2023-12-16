@@ -22,3 +22,16 @@ body {
     font-size: 16px;
     cursor: pointer;
 }
+
+/* Previous CSS rules... */
+
+#coffee-grams {
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+#water-display {
+    font-size: 20px;
+    margin-top: 10px;
+}
