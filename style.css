@@ -127,11 +127,9 @@ button:hover {
 
 
 #keep-awake-video {
-    display: display;
     width: 10px;
-    height: 10px;
+    height: 100px;
 }
 
 #keepbutton {
-    display: none;
 }
