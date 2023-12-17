@@ -29,7 +29,6 @@
     
     <div id="ratio-display"></div>
     <p>
-        iphone可能會無法保持屏幕常亮
 </div>
     <button id="test-sound">測試聲音</button>
     <button id="keepbutton">螢幕常亮</button>
@@ -82,16 +81,27 @@
     <audio id="ding1-sound" src="ding1.mp3"></audio>
     <audio id="ding2-sound" src="ding2.mp3"></audio>
     <script src="script.js"></script>
-    <script src="https://unpkg.com/nosleep.js"></script>
-
+    <script src="./NoSleep.min.js"></script>
+    
     <script>
-    NoSleep.init();
-
-    // 在屏幕即將休眠時喚醒屏幕
-    window.addEventListener("screensaverWillStart", () => {
-        NoSleep.wake();
-    });
-    </script>
+        var noSleep = new NoSleep();
+  
+        var wakeLockEnabled = false;
+        var toggleEl = document.querySelector("#toggle");
+        toggleEl.addEventListener('click', function() {
+          if (!wakeLockEnabled) {
+            noSleep.enable(); // keep the screen on!
+            wakeLockEnabled = true;
+            toggleEl.value = "Wake Lock is enabled";
+            document.body.style.backgroundColor = "green";
+          } else {
+            noSleep.disable(); // let the screen turn off.
+            wakeLockEnabled = false;
+            toggleEl.value = "Wake Lock is disabled";
+            document.body.style.backgroundColor = "";
+          }
+        }, false);
+      </script>
     <script>
         if ('wakeLock' in navigator) {
             navigator.wakeLock.request('screen').then(() => {
