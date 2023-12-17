@@ -12,6 +12,10 @@ window.onload = function() {
     });
 };
 
+document.getElementById("keepbutton").addEventListener("click", function() {
+    document.getElementById("keep-awake-video").play();
+});
+
 document.getElementById("start-timer").addEventListener("click", function() {
     if (!isTimerRunning) {
         this.textContent = "暫停";
