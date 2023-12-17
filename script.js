@@ -126,7 +126,6 @@ function playDingSound(isFinalStage) {
     if (isFinalStage) {
         setTimeout(() => { dingSoundend.play(); }, 500);
         setTimeout(() => { dingSoundend.play(); }, 1500);
-        setTimeout(() => { dingSoundend.play(); }, 3000);
 
     }
 }

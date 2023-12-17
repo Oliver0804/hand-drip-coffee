@@ -124,3 +124,8 @@ button:hover {
 .coffee-setup a:hover {
     text-decoration: underline;
 }
+
+
+#keep-awake-video {
+    display: none;
+}
