@@ -5,6 +5,13 @@ let currentStage = 0;
 let isTimerRunning = false;
 let pausedTime = 0; // 新增一個變量來記錄暫停時的時間
 
+// script.js
+window.onload = function() {
+    document.getElementById("keep-awake-video").play().catch(e => {
+        console.log("自動播放失敗：", e);
+    });
+};
+
 document.getElementById("start-timer").addEventListener("click", function() {
     if (!isTimerRunning) {
         this.textContent = "暫停";
