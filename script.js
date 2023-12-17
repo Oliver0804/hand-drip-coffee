@@ -29,19 +29,21 @@ fetch('https://raw.githubusercontent.com/Oliver0804/hand-drip-coffee/main/Coffee
 
     function displayBrewingTime() {
         const method = document.getElementById("brewing-method").value;
-        const stages = brewingMethods[method].沖泡階段;
-        const totalTimeInSeconds = stages.reduce((sum, stage) => sum + stage.時間, 0);
-    
-        // 轉換總時間為分鐘和秒數
-        const minutes = Math.floor(totalTimeInSeconds / 60);
-        const seconds = totalTimeInSeconds % 60;
-    
-        // 格式化分鐘和秒數顯示（確保秒數為兩位數）
-        const timeFormatted = `${minutes} 分 ${seconds.toString().padStart(2, '0')} 秒`;
-    
-        // 顯示兩種時間格式
-        document.getElementById("brewing-time-display").textContent = `總沖泡時間：${timeFormatted} / (${totalTimeInSeconds} 秒)`;
+        if (brewingMethods && brewingMethods[method]) {
+            const stages = brewingMethods[method].沖泡階段;
+            const totalTimeInSeconds = stages.reduce((sum, stage) => sum + stage.時間, 0);
+        
+            const minutes = Math.floor(totalTimeInSeconds / 60);
+            const seconds = totalTimeInSeconds % 60;
+        
+            const timeFormatted = `${minutes} 分 ${seconds.toString().padStart(2, '0')} 秒`;
+        
+            document.getElementById("brewing-time-display").textContent = `總沖泡時間：${timeFormatted} / (${totalTimeInSeconds} 秒)`;
+        } else {
+            console.error('未找到所選沖泡方法或方法數據未正確加載');
+        }
     }
+    
     
 // 初始化沖泡方法選擇器
 function initializeBrewingMethodSelector() {
