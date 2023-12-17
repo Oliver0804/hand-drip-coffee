@@ -85,6 +85,14 @@
     <script src="https://unpkg.com/nosleep.js"></script>
 
     <script>
+    NoSleep.init();
+
+    // 在屏幕即將休眠時喚醒屏幕
+    window.addEventListener("screensaverWillStart", () => {
+        NoSleep.wake();
+    });
+    </script>
+    <script>
         if ('wakeLock' in navigator) {
             navigator.wakeLock.request('screen').then(() => {
                 console.log('屏幕將保持活躍');
