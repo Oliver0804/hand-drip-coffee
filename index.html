@@ -6,11 +6,10 @@
     <title>Coffee Brewing Timer</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" type="image/x-icon" href="./icon.ico">
-    <meta name="apple-touch-fullscreen" content="yes">
 
 </head>
 <body>
-    <h1>☕Coffee Brewing Timer</h1>nosleep
+    <h1>☕Coffee Brewing Timer</h1>v1.0.0
     <hr> 
 <!-- 控制按鈕 -->
 <button id="toggle-content-btn">粉水比計算</button>
@@ -32,7 +31,7 @@
 </div>
     <button id="test-sound">測試聲音</button>
     <button id="keepbutton">螢幕常亮</button>
-    <button id="toggle">Toggle Wake Lock</button>
+    <button id="toggle">螢幕常亮</button>
 
 
 
@@ -75,45 +74,37 @@
         <p>Check out my github: <a href="https://github.com/oliver0804" target="_blank">oliver0804's Coffee Brewing Tool</a></p>
     </div>
 
-    <video id="keep-awake-video" loop autoplay muted playsinline>
-        <source src="./keep.mp4" type="video/mp4">
-        您的瀏覽器不支持 HTML5 video 標籤。
-    </video>
+
 
     <audio id="ding1-sound" src="ding1.mp3"></audio>
     <audio id="ding2-sound" src="ding2.mp3"></audio>
     <script src="script.js"></script>
     <script src="./NoSleep.min.js"></script>
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var noSleep = new NoSleep();
-            var wakeLockEnabled = false;
+            var wakeLockEnabled = true; // 预设为 true
+            noSleep.enable(); // 默认启用螢幕常亮
+    
             var toggleEl = document.querySelector("#toggle");
+            toggleEl.textContent = "螢幕常亮開啟"; // 默认文本
+    
             toggleEl.addEventListener('click', function() {
                 if (!wakeLockEnabled) {
                     noSleep.enable(); // keep the screen on!
                     wakeLockEnabled = true;
-                    toggleEl.textContent = "Wake Lock is enabled";
-                    document.body.style.backgroundColor = "green";
+                    toggleEl.textContent = "螢幕常亮開啟";
+                    document.body.style.backgroundColor = "";
                 } else {
                     noSleep.disable(); // let the screen turn off.
                     wakeLockEnabled = false;
-                    toggleEl.textContent = "Wake Lock is disabled";
+                    toggleEl.textContent = "螢幕常亮關閉";
                     document.body.style.backgroundColor = "";
                 }
             }, false);
         });
     </script>
-    <script>
-        if ('wakeLock' in navigator) {
-            navigator.wakeLock.request('screen').then(() => {
-                console.log('屏幕將保持活躍');
-            }).catch((err) => {
-                console.error('屏幕喚醒鎖定失敗：', err);
-            });
-        }
-    </script>
+
     
 </body>
 

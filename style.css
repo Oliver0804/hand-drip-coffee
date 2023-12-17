@@ -132,4 +132,5 @@ button:hover {
 }
 
 #keepbutton {
+    display: none;
 }

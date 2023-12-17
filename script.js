@@ -6,20 +6,6 @@ let isTimerRunning = false;
 let pausedTime = 0; // 新增一個變量來記錄暫停時的時間
 
 
-window.addEventListener("screensaverWillStart", () => {
-    // 喚醒屏幕
-    window.wakeLock();
-  });
-// script.js
-window.onload = function() {
-    document.getElementById("keep-awake-video").play().catch(e => {
-        console.log("自動播放失敗：", e);
-    });
-};
-
-document.getElementById("keepbutton").addEventListener("click", function() {
-    document.getElementById("keep-awake-video").play();
-});
 
 document.getElementById("start-timer").addEventListener("click", function() {
     if (!isTimerRunning) {
