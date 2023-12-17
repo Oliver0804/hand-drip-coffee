@@ -32,6 +32,8 @@
 </div>
     <button id="test-sound">測試聲音</button>
     <button id="keepbutton">螢幕常亮</button>
+    <button id="toggle">Toggle Wake Lock</button>
+
 
 
     <p>
@@ -84,24 +86,25 @@
     <script src="./NoSleep.min.js"></script>
     
     <script>
-        var noSleep = new NoSleep();
-  
-        var wakeLockEnabled = false;
-        var toggleEl = document.querySelector("#toggle");
-        toggleEl.addEventListener('click', function() {
-          if (!wakeLockEnabled) {
-            noSleep.enable(); // keep the screen on!
-            wakeLockEnabled = true;
-            toggleEl.value = "Wake Lock is enabled";
-            document.body.style.backgroundColor = "green";
-          } else {
-            noSleep.disable(); // let the screen turn off.
-            wakeLockEnabled = false;
-            toggleEl.value = "Wake Lock is disabled";
-            document.body.style.backgroundColor = "";
-          }
-        }, false);
-      </script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var noSleep = new NoSleep();
+            var wakeLockEnabled = false;
+            var toggleEl = document.querySelector("#toggle");
+            toggleEl.addEventListener('click', function() {
+                if (!wakeLockEnabled) {
+                    noSleep.enable(); // keep the screen on!
+                    wakeLockEnabled = true;
+                    toggleEl.textContent = "Wake Lock is enabled";
+                    document.body.style.backgroundColor = "green";
+                } else {
+                    noSleep.disable(); // let the screen turn off.
+                    wakeLockEnabled = false;
+                    toggleEl.textContent = "Wake Lock is disabled";
+                    document.body.style.backgroundColor = "";
+                }
+            }, false);
+        });
+    </script>
     <script>
         if ('wakeLock' in navigator) {
             navigator.wakeLock.request('screen').then(() => {
