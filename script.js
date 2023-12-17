@@ -171,6 +171,7 @@ function resetTimer() {
 
 
 document.getElementById("test-sound").addEventListener("click", function() {
+    document.getElementById("ding1-sound").play();
     document.getElementById("ding2-sound").play();
 });
 
