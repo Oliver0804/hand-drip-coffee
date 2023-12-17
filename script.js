@@ -3,6 +3,7 @@ let timerInterval;
 let timeElapsed;
 let currentStage = 0;
 let isTimerRunning = false;
+let pausedTime = 0; // 新增一個變量來記錄暫停時的時間
 
 document.getElementById("start-timer").addEventListener("click", function() {
     if (!isTimerRunning) {
@@ -114,11 +115,14 @@ function getTotalElapsed(stages, currentStage) {
 }
 
 function playDingSound(isFinalStage) {
-    const dingSound = document.getElementById("ding-sound");
+    const dingSound = document.getElementById("ding1-sound");
+    const dingSoundend = document.getElementById("ding2-sound");
     dingSound.play();
     if (isFinalStage) {
-        setTimeout(() => { dingSound.play(); }, 500);
-        setTimeout(() => { dingSound.play(); }, 1000);
+        setTimeout(() => { dingSoundend.play(); }, 500);
+        setTimeout(() => { dingSoundend.play(); }, 1500);
+        setTimeout(() => { dingSoundend.play(); }, 3000);
+
     }
 }
 
@@ -144,6 +148,13 @@ function updateTimerDisplay(elapsed, total) {
 
 function pauseTimer() {
     clearInterval(timerInterval);
+    pausedTime = timeElapsed; // 在暫停時記錄當前時間
+    isTimerRunning = false;
+}
+
+function resumeTimer() {
+    startBrewingTimer(); // 重新啟動計時器
+    isTimerRunning = true;
 }
 
 function resetTimer() {
@@ -156,7 +167,7 @@ function resetTimer() {
 
 
 document.getElementById("test-sound").addEventListener("click", function() {
-    document.getElementById("ding-sound").play();
+    document.getElementById("ding2-sound").play();
 });
 
 
@@ -168,5 +179,15 @@ document.getElementById("calculate-ratio").addEventListener("click", function() 
         document.getElementById("ratio-display").textContent = `粉水比: 1:${ratio.toFixed(2)}`;
     } else {
         document.getElementById("ratio-display").textContent = "請輸入有效的咖啡粉重量";
+    }
+});
+
+
+document.getElementById("toggle-content-btn").addEventListener("click", function() {
+    var content = document.getElementById("toggle-content");
+    if (content.style.display === "none") {
+        content.style.display = "block";
+    } else {
+        content.style.display = "none";
     }
 });

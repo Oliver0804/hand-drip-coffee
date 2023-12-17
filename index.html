@@ -9,6 +9,11 @@
 <body>
     <h1>Coffee Brewing Timer</h1>
     <hr> 
+<!-- 控制按鈕 -->
+<button id="toggle-content-btn">粉水比計算</button>
+
+<!-- 可收起展開的內容 -->
+<div id="toggle-content" style="display: none;">
     <div class="input-group">
         咖啡粉重量 <input type="number" id="coffee-grams" placeholder="咖啡粉總克數 (g)" value="20"> g 
     </div>
@@ -17,11 +22,14 @@
         預期水量 <input type="number" id="water-volume" placeholder="預期水量 (ml)" value="300"> ml
     </div>
     <p>
-
     <button id="calculate-ratio">計算粉水比</button>
-    <p>
-
+    <button id="test-sound">測試聲音</button>
     <div id="ratio-display"></div>
+    <p>
+</div>
+
+
+
     <p>
     <hr> 
     <select id="brewing-method" onchange="displayBrewingTime()">
@@ -43,16 +51,27 @@
     <div id="progress-bar-container">
         <div id="progress-bar"></div>
     </div>
-    <button id="test-sound">測試聲音</button>
+  
     <audio id="ding-sound" src="hotel-bell-ding.mp3"></audio>
 
     <div class="floating-buttons">
         <button id="start-timer">開始</button>
         <button id="reset-timer">重置</button>
     </div>
+    <hr> 
 
-    <audio id="ding-sound" src="hotel-bell-ding.mp3"></audio>
+       <!-- GitHub 信息和贊助連結 -->
+       <div class="github-support">
+        <p>Support Me 💖</p>
+        <p>If you like my work and want to support me, consider sponsoring me. Every bit of support is greatly appreciated!</p>
+        <a href="https://portaly.cc/oliver0804/support" target="_blank">
+            <img src="https://img.shields.io/badge/Support-me-green.svg" alt="Support me">
+        </a>
+        <p>Check out my GitHub: <a href="https://github.com/oliver0804" target="_blank">oliver0804</a></p>
+    </div>
 
+    <audio id="ding1-sound" src="ding1.mp3"></audio>
+    <audio id="ding2-sound" src="ding2.mp3"></audio>
     <script src="script.js"></script>
 </body>
 </html>
