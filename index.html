@@ -80,5 +80,16 @@
     <audio id="ding1-sound" src="ding1.mp3"></audio>
     <audio id="ding2-sound" src="ding2.mp3"></audio>
     <script src="script.js"></script>
+    <script>
+        if ('wakeLock' in navigator) {
+            navigator.wakeLock.request('screen').then(() => {
+                console.log('屏幕將保持活躍');
+            }).catch((err) => {
+                console.error('屏幕喚醒鎖定失敗：', err);
+            });
+        }
+    </script>
+    
 </body>
+
 </html>
