@@ -124,11 +124,9 @@ function getTotalElapsed(stages, currentStage) {
 function playDingSound(isFinalStage) {
     const dingSound = document.getElementById("ding1-sound");
     const dingSoundend = document.getElementById("ding2-sound");
-    dingSound.play();
+    setTimeout(() => { dingSound.play(); }, 500);
     if (isFinalStage) {
         setTimeout(() => { dingSoundend.play(); }, 500);
-        setTimeout(() => { dingSoundend.play(); }, 1500);
-
     }
 }
 
