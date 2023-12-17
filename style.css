@@ -12,7 +12,7 @@ h1 {
     text-align: center; /* 文字置中 */
     margin-top: 5px; /* 上邊距 */
     margin-bottom: 5px; /* 下邊距 */
-    font-family: 'Arial', sans-serif; /* 字體 */
+    font-family: 'Courier New', monospace; /* 使用等寬字體 */
 }
 
 
@@ -102,3 +102,25 @@ button:hover {
     margin: 10px 0; /* 上下邊距 */
 }
 
+.coffee-setup {
+    font-family: 'Courier New', monospace; /* 使用等寬字體 */
+    color: #333; /* 黑色或深灰色文字 */
+    background-color: #f5f5f5; /* 淺灰色背景 */
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.coffee-setup p {
+    margin: 10px 0;
+}
+
+.coffee-setup a {
+    color: #4CAF50; /* 綠色連結 */
+    text-decoration: none;
+}
+
+.coffee-setup a:hover {
+    text-decoration: underline;
+}
