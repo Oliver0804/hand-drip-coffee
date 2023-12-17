@@ -128,5 +128,6 @@ button:hover {
 
 #keep-awake-video {
     display: display;
-    size: 10px 10px;
+    width: 10px;
+    height: 10px;
 }
