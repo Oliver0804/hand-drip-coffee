@@ -6,6 +6,7 @@
     <title>Coffee Brewing Timer</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" type="image/x-icon" href="./icon.ico">
+    <meta name="apple-touch-fullscreen" content="yes">
 
 </head>
 <body>
@@ -28,6 +29,7 @@
     
     <div id="ratio-display"></div>
     <p>
+        iphone可能會無法保持屏幕常亮
 </div>
     <button id="test-sound">測試聲音</button>
     <button id="keepbutton">螢幕常亮</button>
@@ -80,6 +82,8 @@
     <audio id="ding1-sound" src="ding1.mp3"></audio>
     <audio id="ding2-sound" src="ding2.mp3"></audio>
     <script src="script.js"></script>
+    <script src="https://unpkg.com/nosleep.js"></script>
+
     <script>
         if ('wakeLock' in navigator) {
             navigator.wakeLock.request('screen').then(() => {
