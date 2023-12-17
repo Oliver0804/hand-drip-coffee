@@ -9,7 +9,9 @@
 
 </head>
 <body>
-    <h1>☕Coffee Brewing Timer</h1>v1.0.0
+    <h1>☕Coffee Brewing Timer</h1>
+    ver:<div id="latest-commit"></div>
+
     <hr> 
 <!-- 控制按鈕 -->
 <button id="toggle-content-btn">粉水比計算</button>
@@ -104,7 +106,15 @@
             }, false);
         });
     </script>
-
+    <script>
+        fetch('https://api.github.com/repos/Oliver0804/hand-drip-coffee/commits')
+            .then(response => response.json())
+            .then(commits => {
+                const latestCommitSha = commits[0].sha.substring(0, 6); // 获取前六个字符
+                document.getElementById('latest-commit').textContent = latestCommitSha;
+            })
+            .catch(error => console.error('获取 commit 数据出错', error));
+    </script>
     
 </body>
 
