@@ -88,12 +88,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var noSleep = new NoSleep();
-            var wakeLockEnabled = true; // 预设为 true
-            noSleep.enable(); // 默认启用螢幕常亮
-    
+            var wakeLockEnabled = false;
             var toggleEl = document.querySelector("#toggle");
-            toggleEl.textContent = "螢幕常亮開啟"; // 默认文本
-    
             toggleEl.addEventListener('click', function() {
                 if (!wakeLockEnabled) {
                     noSleep.enable(); // keep the screen on!
