@@ -29,3 +29,7 @@ The Hand-Drip Coffee Timer is an application designed for coffee enthusiasts and
 ## Android (其他瀏覽器)
 
 如果您使用的是除 Chrome 之外的其他 Android 瀏覽器，步驟可能略有不同。通常，您需要打開瀏覽器的菜單，然後尋找「添加到主屏幕」或類似的選項。
+
+
+### Nosleep.min.js
+/*! NoSleep.min.js v0.12.0 - git.io/vfn01 - Rich Tibbett - MIT license */
