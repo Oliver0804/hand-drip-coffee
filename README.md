@@ -25,7 +25,7 @@ The Hand-Drip Coffee Timer is an application designed for coffee enthusiasts and
 2. 點擊瀏覽器右上角的三個點（菜單按鈕）。
 3. 從下拉菜單中選擇「添加到主屏幕」。
 4. 修改網站快捷方式的名稱（如果需要），然後點擊「添加」。
-
+ 
 ## Android (其他瀏覽器)
 
 如果您使用的是除 Chrome 之外的其他 Android 瀏覽器，步驟可能略有不同。通常，您需要打開瀏覽器的菜單，然後尋找「添加到主屏幕」或類似的選項。
