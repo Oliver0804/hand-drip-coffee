@@ -1,120 +1,473 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Brewing Timer</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" type="image/x-icon" href="./icon.ico">
+    <title>專業咖啡沖煮助手</title>
+    <style>
+        :root {
+            --primary-color: #6f4e37;
+            --secondary-color: #d4a972;
+            --bg-color: #f5e6d3;
+        }
 
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-color);
+            transition: background 0.3s ease;
+        }
+
+        .container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            letter-spacing: 1px;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        .control-group {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 25px;
+        }
+
+        .roast-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .roast-option {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .roast-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .roast-option.active {
+            background: linear-gradient(145deg, var(--primary-color), #5d4130);
+            color: white;
+            animation: scaleUp 0.3s ease;
+        }
+
+        #brewMethod {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            appearance: none;
+            background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236f4e37'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e") no-repeat right 12px center/15px;
+        }
+
+        #brewMethod:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(111,78,55,0.2);
+        }
+
+        .ratio-calculator {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(145deg, #fff8f0, #fff);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            animation: slideIn 0.5s ease;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        #coffeeSlider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #eee;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        #coffeeSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #coffeeSlider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .ratio-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .ratio-box {
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        #timer {
+            font-size: 3.5em;
+            text-align: center;
+            margin: 30px 0;
+            color: var(--primary-color);
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: pulse 2s infinite;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        button {
+            padding: 16px 35px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(145deg, var(--primary-color), #5d4130);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        #steps {
+            list-style-type: none;
+            padding: 0;
+            margin: 25px 0;
+        }
+
+        #steps li {
+            padding: 18px;
+            margin: 12px 0;
+            border-radius: 8px;
+            background: rgba(111,78,55,0.05);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInItem 0.4s ease forwards;
+        }
+
+        #steps li:nth-child(1) { animation-delay: 0.1s; }
+        #steps li:nth-child(2) { animation-delay: 0.2s; }
+        #steps li:nth-child(3) { animation-delay: 0.3s; }
+        #steps li:nth-child(4) { animation-delay: 0.4s; }
+
+        #steps li.active {
+            background: linear-gradient(145deg, var(--primary-color), #5d4130);
+            color: white;
+            transform: translateX(0);
+            box-shadow: 0 4px 12px rgba(111,78,55,0.2);
+        }
+
+        .note {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.6;
+            text-align: center;
+            margin-top: 25px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.3s forwards;
+        }
+
+        .temp-display {
+            font-size: 1.2em;
+            color: #d9534f;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.95); }
+            to { transform: scale(1); }
+        }
+
+        @keyframes slideInItem {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .control-group {
+                grid-template-columns: 1fr;
+            }
+            
+            #timer {
+                font-size: 2.5em;
+            }
+            
+            button {
+                padding: 12px 25px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>專業咖啡沖煮助手</h1>
+        
+        <div class="roast-selector">
+            <div class="roast-option active" data-roast="light">淺焙</div>
+            <div class="roast-option" data-roast="medium">中焙</div>
+            <div class="roast-option" data-roast="dark">深焙</div>
+        </div>
+        <div class="temp-display" id="tempSuggest">建議水溫：92-94°C</div>
 
-    <audio id="ding1-sound" src="./ding1.mp3" preload="auto"></audio>
-    <audio id="ding2-sound" src="./ding2.mp3" preload="auto"></audio>
+        <select id="brewMethod">
+            <option value="oneCut">一刀流</option>
+            <option value="threeStage">三段式</option>
+            <option value="fourSix">四六法</option>
+        </select>
 
-    <h1>☕Coffee Brewing Timer</h1>
-    <div id="latest-commit"></div>
+        <div class="ratio-calculator">
+            <h3>粉水比計算器</h3>
+            <div class="slider-container">
+                <label>咖啡粉量：<span id="coffeeAmount">15</span>g</label>
+                <input type="range" id="coffeeSlider" min="10" max="30" value="15" step="0.5">
+            </div>
+            <div class="ratio-results">
+                <div class="ratio-box">
+                    <div>1:15</div>
+                    <div id="ratio15">225ml</div>
+                </div>
+                <div class="ratio-box">
+                    <div>1:16</div>
+                    <div id="ratio16">240ml</div>
+                </div>
+                <div class="ratio-box">
+                    <div>1:17</div>
+                    <div id="ratio17">255ml</div>
+                </div>
+            </div>
+        </div>
 
-    <hr> 
-<!-- 控制按鈕 -->
-<button id="toggle-content-btn">粉水比計算</button>
-
-<!-- 可收起展開的內容 -->
-<div id="toggle-content" style="display: none;">
-    <div class="input-group">
-        咖啡粉重量 <input type="number" id="coffee-grams" placeholder="咖啡粉總克數 (g)" value="20"> g 
-    </div>
-    <p>
-    <div class="input-group">
-        預期水量 <input type="number" id="water-volume" placeholder="預期水量 (ml)" value="300"> ml
-    </div>
-    <p>
-    <button id="calculate-ratio">計算粉水比</button>
-    
-    <div id="ratio-display"></div>
-    <p>
-</div>
-    <button id="test-sound">啟用聲音</button>
-    <button id="keepbutton">螢幕常亮</button>
-    <button id="toggle">螢幕常亮</button>
-
-
-
-    <p>
-    <hr> 
-    <select id="brewing-method" onchange="displayBrewingTime()">
-        <option value="沖泡">手法</option>
-    </select>
-    <div id="brewing-time-display"></div>
-   
-    <div id="stage-display"></div> <!-- 新增顯示階段和進度的元素 -->
-  
-    <div id="stage-info">
-        <div id="stage-name"></div> <!-- 顯示階段名稱 -->
-        <div id="water-amount"></div> <!-- 顯示水量 -->
-        <div id="flow-rate"></div> <!-- 顯示流速大小 -->
-    </div>
-    <div id="timer-display"></div>
-    <div id="water-display"></div>
-
-    <div id="progress-bar-container">
-        <div id="progress-bar"></div>
-    </div>
-  
-    <audio id="ding-sound" src="hotel-bell-ding.mp3"></audio>
-
-    <div class="floating-buttons">
-        <button id="start-timer">開始</button>
-        <button id="reset-timer">重置</button>
-    </div>
-    <hr> 
-
-    <!-- 手沖咖啡工具信息和贊助連結 -->
-    <div class="coffee-setup">
-        <p>Support Me 💖</p>
-        <p>If you like my coffee brewing tool and want to support me, consider sponsoring. Every bit of support is greatly appreciated!</p>
-        <a href="https://portaly.cc/oliver0804/support" target="_blank">
-            <img src="https://img.shields.io/badge/Support-me-green.svg" alt="Support me">
-        </a>
-        <p>Check out my github: <a href="https://github.com/oliver0804" target="_blank">oliver0804's Coffee Brewing Tool</a></p>
+        <div id="timer">00:00</div>
+        <div class="buttons">
+            <button id="startBtn">開始沖煮</button>
+            <button id="resetBtn">重新開始</button>
+        </div>
+        <ul id="steps"></ul>
+        <p class="note">* 請使用新鮮研磨的咖啡粉 (粗細度類似粗砂糖)<br>
+            * 悶蒸水量為粉量的2倍<br>
+            * 本頁面會保持螢幕常亮</p>
     </div>
 
-
-
-    
-    <script src="script.js"></script>
-    <script src="./NoSleep.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var noSleep = new NoSleep();
-            var wakeLockEnabled = false;
-            var toggleEl = document.querySelector("#toggle");
-            toggleEl.addEventListener('click', function() {
-                if (!wakeLockEnabled) {
-                    noSleep.enable(); // keep the screen on!
-                    wakeLockEnabled = true;
-                    toggleEl.textContent = "螢幕常亮開啟";
-                    document.body.style.backgroundColor = "";
-                } else {
-                    noSleep.disable(); // let the screen turn off.
-                    wakeLockEnabled = false;
-                    toggleEl.textContent = "螢幕常亮關閉";
-                    document.body.style.backgroundColor = "";
-                }
-            }, false);
+        let timer;
+        let seconds = 0;
+        let currentStep = 0;
+        let wakeLock = null;
+
+        const tempRanges = {
+            light: "92-94°C",
+            medium: "89-91°C",
+            dark: "86-88°C"
+        };
+
+        const methods = {
+            oneCut: [
+                {duration: 30, text: "悶蒸：注入{{bloomWater}}g熱水，等待30秒"},
+                {duration: 150, text: "主要注水：緩慢注水至{{totalWater}}g，目標時間2分30秒"},
+                {duration: 30, text: "最後階段：等待滴漏完成"}
+            ],
+            threeStage: [
+                {duration: 30, text: "悶蒸：注入{{bloomWater}}g熱水，等待30秒"},
+                {duration: 60, text: "第二段：注水至{{stage2Water}}g，等待1分鐘"},
+                {duration: 90, text: "第三段：注水至{{totalWater}}g，總時間3分鐘"}
+            ],
+            fourSix: [
+                {duration: 45, text: "第一段：注入{{bloomWater}}g熱水，等待45秒"},
+                {duration: 45, text: "第二段：注水至{{stage2Water}}g"},
+                {duration: 45, text: "第三段：注水至{{totalWater}}g"},
+                {duration: 45, text: "最後階段：等待滴漏完成"}
+            ]
+        };
+
+        // 烘焙度選擇
+        document.querySelectorAll('.roast-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.roast-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('tempSuggest').textContent = 
+                    `建議水溫：${tempRanges[this.dataset.roast]}`;
+            });
         });
-    </script>
-    <script>
-        fetch('https://api.github.com/repos/Oliver0804/hand-drip-coffee/commits')
-            .then(response => response.json())
-            .then(commits => {
-                const latestCommitSha = commits[0].sha.substring(0, 6); // 获取前六个字符
-                document.getElementById('latest-commit').textContent = "ver:"+latestCommitSha;
-            })
-            .catch(error => console.error('获取 commit 数据出错', error));
-    </script>
-    
-</body>
 
+        // 粉水比計算
+        function updateRatios() {
+            const coffee = parseFloat(document.getElementById('coffeeSlider').value);
+            document.getElementById('coffeeAmount').textContent = coffee;
+            document.getElementById('ratio15').textContent = `${(coffee * 15).toFixed(1)}ml`;
+            document.getElementById('ratio16').textContent = `${(coffee * 16).toFixed(1)}ml`;
+            document.getElementById('ratio17').textContent = `${(coffee * 17).toFixed(1)}ml`;
+        }
+
+        // 更新沖煮步驟
+        function updateSteps(method) {
+            const coffee = parseFloat(document.getElementById('coffeeSlider').value);
+            const totalWater = coffee * 16;
+            
+            const variables = {
+                bloomWater: (coffee * 2).toFixed(1),
+                totalWater: totalWater.toFixed(1),
+                stage2Water: (totalWater * 0.6).toFixed(1)
+            };
+
+            const stepsContainer = document.getElementById('steps');
+            stepsContainer.innerHTML = methods[method].map(step => {
+                let text = step.text;
+                for(const [key, value] of Object.entries(variables)) {
+                    text = text.replace(`{{${key}}}`, value);
+                }
+                return `<li data-duration="${step.duration}">${text}</li>`;
+            }).join('');
+
+            // 觸發重新動畫
+            stepsContainer.querySelectorAll('li').forEach((item, index) => {
+                item.style.animation = `slideInItem 0.4s ease forwards ${index * 0.1}s`;
+            });
+        }
+
+        // 事件監聽
+        document.getElementById('coffeeSlider').addEventListener('input', () => {
+            updateRatios();
+            updateSteps(document.getElementById('brewMethod').value);
+        });
+
+        document.getElementById('brewMethod').addEventListener('change', (e) => {
+            updateSteps(e.target.value);
+        });
+
+        // 計時功能
+        async function keepAwake() {
+            try {
+                wakeLock = await navigator.wakeLock.request('screen');
+            } catch (err) {
+                console.log('螢幕常亮功能不可用: ' + err.message);
+            }
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            document.getElementById('timer').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        function startStep() {
+            const steps = document.querySelectorAll('#steps li');
+            if (currentStep < steps.length) {
+                steps.forEach(step => step.classList.remove('active'));
+                steps[currentStep].classList.add('active');
+                const duration = parseInt(steps[currentStep].dataset.duration);
+                seconds = duration;
+                
+                timer = setInterval(() => {
+                    seconds--;
+                    updateTimer();
+                    if (seconds <= 0) {
+                        clearInterval(timer);
+                        currentStep++;
+                        if (currentStep < steps.length) {
+                            startStep();
+                        }
+                    }
+                }, 1000);
+            }
+        }
+
+        document.getElementById('startBtn').addEventListener('click', () => {
+            keepAwake();
+            currentStep = 0;
+            startStep();
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            clearInterval(timer);
+            seconds = 0;
+            currentStep = 0;
+            updateTimer();
+            document.querySelectorAll('#steps li').forEach(step => {
+                step.classList.remove('active');
+            });
+            if (wakeLock) wakeLock.release();
+        });
+
+        // 初始化
+        updateSteps('oneCut');
+        updateRatios();
+    </script>
+</body>
 </html>
